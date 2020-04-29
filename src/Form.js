@@ -52,16 +52,11 @@ export default function Form () {
             .then(res => {
                 setPost(res.data);
 
-            setForm({
-                name: '',
-                email: '',
-                password: '',
-                terms: '',
-            });
+            setForm(initinalFormState);
             setServerError(null);
             })
             .catch(err => {
-                setServerError('There was a server error');
+                setServerError(alert('There was a server error'));
             }); 
     };
 
@@ -100,7 +95,7 @@ export default function Form () {
                 Email 
                 <input
                     id='email'
-                    type='text'
+                    type='email'
                     placeholder='Enter email'
                     name='email'
                     maxLength='25'
