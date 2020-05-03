@@ -8,8 +8,7 @@ export default function Form () {
         name: '',
         email: '',
         password: '',
-        terms: '',
-
+        terms: ''
     };
 
     const [form, setForm] = useState(initinalFormState);
@@ -17,12 +16,14 @@ export default function Form () {
     const [isButtonDisabled, setIsButtonDisabled] = useState(true);
     const [serverError, setServerError] = useState('');
     const [post, setPost] = useState([]);
+    
 
     const formSchema = yup.object().shape({
         name: yup.string().required('Name is a required field'),
-        email: yup.string().email('Please enter a valid email'),
+        email: yup.string().email('Please enter a valid email').required(),
         password: yup.string().required('Please select a password (min 10 characters, max 15)'),
-        terms: yup.boolean().oneOf([true])
+        terms: yup.boolean().oneOf([true]),
+        showPassword: yup.boolean().oneOf([true], [false])
     });
 
     const validateChange = e => {
@@ -43,6 +44,7 @@ export default function Form () {
             setIsButtonDisabled(!valid);
         })
     }, [form]);
+
 
     const onSubmit = e => {
         e.preventDefault();
@@ -72,7 +74,7 @@ export default function Form () {
     };
 
 
-
+     
 
     return (
         <form onSubmit={onSubmit}>
@@ -88,8 +90,9 @@ export default function Form () {
                     name='name'
                     onChange={handleChange}
                     value={form.name}
+                    data-cy='name'
                     />
-                    {errors.name.length > 0 ? <p className="error">{errors.name}</p> : null}
+                    {errors.name.length > 0 ? <p className="error" cy-error='error_name'>{errors.name}</p> : null}
             </label>
             <label htmlFor='email'>
                 Email 
@@ -101,6 +104,7 @@ export default function Form () {
                     maxLength='25'
                     onChange={handleChange}
                     value={form.email}
+                    data-cy='email'
                     />
                     {errors.email.length > 0 ? <p className="error">{errors.email}</p> : null}
             </label>
@@ -115,21 +119,24 @@ export default function Form () {
                     maxLength='15'
                     onChange={handleChange}
                     value={form.password}
+                    data-cy='password'
                     />
                     {errors.password.length > 0 ? <p className="error">{errors.password}</p> : null}
             </label>
+
 
                     <input className='box'
                     type='checkbox'
                     name='terms'
                     onChange={handleChange}
                     checked={form.terms}
+                    data-cy='terms'
                     /> 
 
             <label htmlFor='terms' className='terms'>Terms & Conditions</label>
                    
     
-            <button type='submit' disabled={isButtonDisabled}>Submit</button>
+            <button type='submit' disabled={isButtonDisabled} data-cy='submit'>Submit</button>
 
     
          <pre className='pre'>{JSON.stringify(post, null, 2)}</pre>
